@@ -13,15 +13,15 @@ gem 'turbolinks',   '~> 5'
 gem 'jbuilder',     '~> 2.5'
 gem 'bootsnap',     '>= 1.1.0', require: false
 
-gem 'bootstrap',           '~> 4.1'
-gem 'data-confirm-modal',  '1.6.2'
-gem 'jquery-rails',        '~> 4.3'
-gem 'jquery-ui-rails',     '~> 6.0'
+gem 'bootstrap',               '~> 4.1'
+gem 'data-confirm-modal',      '1.6.2'
+gem 'jquery-rails',            '~> 4.3'
+gem 'jquery-ui-rails',         '~> 6.0'
 
 gem 'devise',                 '~> 4.5'
-gem 'omniauth-memair',        '0.0.3'
+gem 'omniauth-memair',        '~> 0.0.4'
 
-gem 'memair', '0.0.28'
+gem 'memair', '~> 0.0.28'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

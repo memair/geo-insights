@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   before_destroy :revoke_token
 
+  has_many :places, dependent: :delete_all
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, omniauth_providers: [:memair]
@@ -19,8 +21,15 @@ class User < ApplicationRecord
     end
 
     user.memair_access_token = credentials['token']
+    user.time_zone = data['time_zone']
     user.save
     user
+  end
+
+  def locations_last_7_days
+    user = Memair.new(self.memair_access_token)
+    query = 'query{Locations(from_timestamp: "last 7 days" to_timestamp: "today" first: 10000){timestamp lat lon point_accuracy}}'
+    user.query(query)['data']['Locations']
   end
   
   private
