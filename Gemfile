@@ -24,6 +24,7 @@ gem 'omniauth-memair',        '~> 0.0.4'
 gem 'memair', '~> 0.0.28'
 
 gem 'auto_strip_attributes', '~> 2.5'
+gem 'geokit-rails',          '~> 2.3.1'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

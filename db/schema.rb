@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_13_215224) do
+ActiveRecord::Schema.define(version: 2018_12_14_205849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2018_12_13_215224) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "distance", null: false
     t.index ["user_id"], name: "index_places_on_user_id"
   end
 
@@ -41,6 +42,8 @@ ActiveRecord::Schema.define(version: 2018_12_13_215224) do
     t.string "memair_access_token"
     t.datetime "last_insight_at"
     t.string "time_zone"
+    t.float "latest_latitude"
+    t.float "latest_longitude"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
