@@ -27,6 +27,7 @@ function initMap2() {
     center: myCoords,
     zoom: 14
     };
+
     var map = new google.maps.Map(document.getElementById('map2'), mapOptions);
     var marker = new google.maps.Marker({
         position: myCoords,
@@ -34,6 +35,7 @@ function initMap2() {
         map: map,
         draggable: true
     });
+    
     // refresh marker position and recenter map on marker
     function refreshMarker(){
         var lat = document.getElementById('place_latitude').value;
@@ -42,9 +44,11 @@ function initMap2() {
         marker.setPosition(myCoords);
         map.setCenter(marker.getPosition());   
     }
+
     // when input values change call refreshMarker
     document.getElementById('place_latitude').onchange = refreshMarker;
     document.getElementById('place_longitude').onchange = refreshMarker;
+
     // when marker is dragged update input values
     marker.addListener('drag', function() {
         latlng = marker.getPosition();
@@ -53,6 +57,7 @@ function initMap2() {
         document.getElementById('place_latitude').value = newlat;
         document.getElementById('place_longitude').value = newlng;
     });
+
     // When drag ends, center (pan) the map on the marker position
     marker.addListener('dragend', function() {
         map.panTo(marker.getPosition());   
