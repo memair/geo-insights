@@ -13,24 +13,12 @@
       <h3>Start by adding some places</h3>
     <% else %>
       <h3>View your latest insights in <a href="https://memair.com/insights">Memair</a></h3>
+      <h4>Places</h4>
       <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Distance</th>
-            <th colspan="3"></th>
-          </tr>
-        </thead>
-
         <tbody>
           <% current_user.places.each do |place| %>
             <tr>
               <td><%= place.name %></td>
-              <td><%= place.latitude %></td>
-              <td><%= place.longitude %></td>
-              <td><%= place.distance %></td>
               <td><%= link_to 'Show', place, class: "btn btn-sm btn-primary" %></td>
               <td><%= link_to 'Edit', edit_place_path(place), class: "btn btn-sm btn-info" %></td>
               <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure you want to delete this place?' }, class: "btn btn-sm btn-danger" %></td>
