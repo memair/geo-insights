@@ -67,7 +67,9 @@ task :generate_insights => :environment do
             title: \"Time Spent in places\"
             type: line
             category_axis: #{dates.as_json}
-            series: [#{series}]
+            series: [#{series}],
+            max: 24,
+            min: 0
           }
         )
         {
