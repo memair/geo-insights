@@ -44,7 +44,7 @@ task :generate_insights => :environment do
     end
 
     series = ''
-    daily_stats.each {|place, dates| series += "{label: #{place}, data: #{dates.values.as_json}}"}
+    daily_stats.each {|place, dates| series += "{label: \"#{place}\", data: #{dates.values.as_json}}"}
 
     query = """
       mutation {
