@@ -62,6 +62,7 @@ task :generate_insights => :environment do
         }
       }
     """
+    puts query
     response =  Memair.new(user.memair_access_token).query(query)
     puts response
   end
