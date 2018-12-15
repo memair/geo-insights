@@ -51,6 +51,12 @@ task :generate_insights => :environment do
       end
     end
 
+    daily_stats.each do |place, dates|
+      dates.each do |date, hours|
+        daily_stats[place][date] = daily_stats[place][date].round(2)
+      end
+    end
+
     series = ''
     daily_stats.each {|place, dates| series += "{label: \"#{place}\", data: #{dates.values.as_json}}"}
 
