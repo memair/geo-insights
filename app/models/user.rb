@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
   def get_locations_last_7_days
     user = Memair.new(self.memair_access_token)
-    query = 'query{Locations(from_timestamp: "last 7 days" to_timestamp: "today" first: 10000){timestamp lat lon point_accuracy}}'
+    query = 'query{Locations(from_timestamp: "last 7 days" to_timestamp: "today" first: 10000 order_by: timestamp order: asc){timestamp lat lon}}'
     user.query(query)['data']['Locations']
   end
 

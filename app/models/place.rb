@@ -8,5 +8,6 @@ class Place < ApplicationRecord
   validates :latitude,  numericality: { greater_than_or_equal_to:  -90, less_than_or_equal_to:  90 }
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }
 
-  acts_as_mappable default_units: :kms, lat_column_name: :latitude, lng_column_name: :longitude
-end
+  acts_as_mappable default_units: :kms, lat_column_name: :latitude, lng_column_name: :longitude, distance_field_name: :distance
+
+  end
