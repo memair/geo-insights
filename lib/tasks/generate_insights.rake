@@ -22,6 +22,13 @@ task :generate_insights => :environment do
         current_visit[:duration] = current_visit[:departed_at] - current_visit[:arrived_at]
         places_visited.append(current_visit)
         current_visit = {}
+      elsif current_place != previous_place && !current_place.nil?
+        current_visit[:departed_at] = Time.parse(location['timestamp']).in_time_zone(user.time_zone)
+        current_visit[:duration] = current_visit[:departed_at] - current_visit[:arrived_at]
+        places_visited.append(current_visit)
+        current_visit = {}
+        current_visit[:arrived_at] = Time.parse(location['timestamp']).in_time_zone(user.time_zone)
+        current_visit[:place] = current_place.name
       end
 
       previous_place = current_place
