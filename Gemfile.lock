@@ -269,7 +269,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
-  data-confirm-modal (= 1.6.2)
+  data-confirm-modal (~> 1.6.2)
   devise (~> 4.5)
   geokit-rails (~> 2.3.1)
   jbuilder (~> 2.5)
