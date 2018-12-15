@@ -14,10 +14,11 @@ task :generate_insights => :environment do
       distance = closest_place.distance_from(Geokit::LatLng.new(location['lat'], location['lon'])) * 1000
       current_place = (closest_place if distance <= closest_place.distance)
 
+      # I'll improve this state machine logic when I've had some sleep
       if !current_place.nil? && previous_place.nil?
         current_visit[:arrived_at] = Time.parse(location['timestamp']).in_time_zone(user.time_zone)
         current_visit[:place] = current_place.name
-      elsif (current_place.nil? && !previous_place.nil?) or ((idx + 1) == locations.count)
+      elsif (current_place.nil? && !previous_place.nil?) || ((idx + 1) == locations.count)
         current_visit[:departed_at] = Time.parse(location['timestamp']).in_time_zone(user.time_zone)
         current_visit[:duration] = current_visit[:departed_at] - current_visit[:arrived_at]
         places_visited.append(current_visit)

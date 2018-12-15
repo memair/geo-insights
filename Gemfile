@@ -14,7 +14,7 @@ gem 'jbuilder',     '~> 2.5'
 gem 'bootsnap',     '>= 1.1.0', require: false
 
 gem 'bootstrap',               '~> 4.1'
-gem 'data-confirm-modal',      '1.6.2'
+gem 'data-confirm-modal',      '~> 1.6.2'
 gem 'jquery-rails',            '~> 4.3'
 gem 'jquery-ui-rails',         '~> 6.0'
 

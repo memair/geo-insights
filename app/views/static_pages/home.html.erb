@@ -1,19 +1,49 @@
 <div class="center jumbotron">
   <center>
-  <div class="alert alert-warning">
-    🚧 This app is under development 🚧
-  </div>
-  <h1>Geo Insights</h1>
-  <img src="/geo-insights.png" width="25%">
-  <h2>Generates insights into your movement behaviours</h2>
   <% flash.each do |key, value| %>
     <div class="<%= flash_class(key) %>">
       <%= value %>
     </div>
   <% end %>
+  <h1>Geo Insights</h1>
+  <img src="/geo-insights.png" width="25%">
+  <h2>Generates insights into your movement behaviours</h2>
   <% if user_signed_in? %>
-    <h3>View your latest insights in <a href="https://memair.com/insights">Memair</a></h3>
-    <%= button_to "Uninstall this app", registration_path(current_user), data: { confirm: 'Geo Insights will no longer generate insights in Memair.', title: 'Are you sure you?' }, method: :delete, class: "btn btn-lg btn-danger" %>
+    <% if current_user.places.empty? %>
+      <h3>Start by adding some places</h3>
+    <% else %>
+      <h3>View your latest insights in <a href="https://memair.com/insights">Memair</a></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Distance</th>
+            <th colspan="3"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% current_user.places.each do |place| %>
+            <tr>
+              <td><%= place.name %></td>
+              <td><%= place.latitude %></td>
+              <td><%= place.longitude %></td>
+              <td><%= place.distance %></td>
+              <td><%= link_to 'Show', place, class: "btn btn-sm btn-primary" %></td>
+              <td><%= link_to 'Edit', edit_place_path(place), class: "btn btn-sm btn-info" %></td>
+              <td><%= link_to 'Destroy', place, method: :delete, data: { confirm: 'Are you sure you want to delete this place?' }, class: "btn btn-sm btn-danger" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+    
+    <div class="btn-group">
+      <%= link_to 'Add New Place', new_place_path, class: "btn btn-primary", style: "margin: 13px;"%>
+      <%= button_to "Uninstall this app", registration_path(current_user), style: "margin: 13px;", data: { confirm: 'Geo Insights will no longer generate insights in Memair.', title: 'Are you sure you?' }, method: :delete, class: "btn btn-danger" %>
+    </div>
   <% else %>
     <%= button_to "Connect with Memair", user_memair_omniauth_authorize_path, id: "sign_in", class: "btn btn-lg btn-primary" %>
   <% end %>
