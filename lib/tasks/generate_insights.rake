@@ -81,4 +81,6 @@ task :generate_insights => :environment do
     response =  Memair.new(user.memair_access_token).query(query)
     puts response
   end
+
+  user.update(last_insight_at: DateTime.now)
 end
