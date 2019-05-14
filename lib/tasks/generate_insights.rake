@@ -35,51 +35,57 @@ task :generate_insights => :environment do
       previous_place = current_place
     end
 
-    dates = (places_visited.first[:arrived_at].to_date..places_visited.last[:departed_at].to_date).map(&:to_s)
     places = user.places.map {|place| place.name}
-    daily_stats = Hash[places.map {|place| [place, Hash[dates.map {|date| [date, 0]}]]}]
 
-    places_visited.each do |visit|
-      if visit[:arrived_at].to_date == visit[:departed_at].to_date
-        daily_stats[visit[:place]][visit[:arrived_at].to_date.to_s] += visit[:duration] / 3600
-      else
-        daily_stats[visit[:place]][visit[:arrived_at].to_date.to_s] += (86400 - visit[:arrived_at].seconds_since_midnight) / 3600
-        daily_stats[visit[:place]][visit[:departed_at].to_date.to_s] += (visit[:departed_at].seconds_since_midnight) / 3600
-        (visit[:arrived_at].to_date..visit[:departed_at].to_date).map(&:to_s)[1..-2].each do |additional_dates|
-          daily_stats[visit[:place]][additional_dates] = 24
+    if places_visited.empty?
+
+      dates = (places_visited.first[:arrived_at].to_date..places_visited.last[:departed_at].to_date).map(&:to_s)
+      daily_stats = Hash[places.map {|place| [place, Hash[dates.map {|date| [date, 0]}]]}]
+
+      places_visited.each do |visit|
+        if visit[:arrived_at].to_date == visit[:departed_at].to_date
+          daily_stats[visit[:place]][visit[:arrived_at].to_date.to_s] += visit[:duration] / 3600
+        else
+          daily_stats[visit[:place]][visit[:arrived_at].to_date.to_s] += (86400 - visit[:arrived_at].seconds_since_midnight) / 3600
+          daily_stats[visit[:place]][visit[:departed_at].to_date.to_s] += (visit[:departed_at].seconds_since_midnight) / 3600
+          (visit[:arrived_at].to_date..visit[:departed_at].to_date).map(&:to_s)[1..-2].each do |additional_dates|
+            daily_stats[visit[:place]][additional_dates] = 24
+          end
         end
       end
-    end
 
-    daily_stats.each do |place, dates|
-      dates.each do |date, hours|
-        daily_stats[place][date] = daily_stats[place][date].round(2)
+      daily_stats.each do |place, dates|
+        dates.each do |date, hours|
+          daily_stats[place][date] = daily_stats[place][date].round(2)
+        end
       end
-    end
 
-    series = daily_stats.map {|place, dates| "{label: \"#{place}\", data: #{dates.values.as_json}}"}.join
+      series = daily_stats.map {|place, dates| "{label: \"#{place}\", data: #{dates.values.as_json}}"}.join
 
-    query = """
-      mutation {
-        CreateInsight(
-          source: \"Geo Insights\"
-          chart: {
-            title: \"Time Spent in places\"
-            type: line
-            category_axis: #{dates.as_json}
-            series: [#{series}],
-            max: 24,
-            min: 0
+      query = """
+        mutation {
+          CreateInsight(
+            source: \"Geo Insights\"
+            chart: {
+              title: \"Time Spent in places\"
+              type: line
+              category_axis: #{dates.as_json}
+              series: [#{series}],
+              max: 24,
+              min: 0
+            }
+          )
+          {
+            id
           }
-        )
-        {
-          id
         }
-      }
-    """
-    puts query
-    response =  Memair.new(user.memair_access_token).query(query)
-    puts response
+      """
+      puts query
+      response =  Memair.new(user.memair_access_token).query(query)
+      puts response
+    else
+      puts "user never visited any of their places"
+    end
   end
 
   user.update(last_insight_at: DateTime.now)
