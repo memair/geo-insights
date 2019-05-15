@@ -37,7 +37,7 @@ task :generate_insights => :environment do
 
     places = user.places.map {|place| place.name}
 
-    if places_visited.empty?
+    unless places_visited.empty?
 
       dates = (places_visited.first[:arrived_at].to_date..places_visited.last[:departed_at].to_date).map(&:to_s)
       daily_stats = Hash[places.map {|place| [place, Hash[dates.map {|date| [date, 0]}]]}]
